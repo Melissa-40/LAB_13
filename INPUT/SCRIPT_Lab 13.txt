@@ -1,0 +1,107 @@
+####################
+#                  #
+# Copiar todo esto #
+#                  #
+####################
+# Hecho con gusto por Ruth Melissa Cobos Ruíz
+
+# Lab_13 Gráficos en R con ggplot2
+
+
+
+install.packages("ggplot2")
+library (ggplot2)
+
+
+# leer df
+green_data <- read.csv("REGESIONES FINALES.csv") ENTRE PARENTESIS VA LA LIGA DE ACCESO AL ARCHIVO
+
+
+# echando un ojo a los datos
+names(green_data)
+
+
+# colocando objetos
+P1
+p1<-ggplot(data=green_data,
+           mapping = aes(x=ICE_index,y=GCI_index,))+
+  geom_point()+
+  geom_text(label=green_data$STATE,
+            color="black",
+            size=4)+
+  geom_point()+
+  geom_smooth(method = lm,
+              se=FALSE,  fullrange=T)
+
+P2
+#comparación de ranking
+p2<-ggplot(data=green_data,
+           mapping = aes(x=ICE_rank,y=GCI_rank,))+
+  geom_point()+
+  geom_text(label=green_data$STATE,
+            color="black",
+            size=4)+
+  geom_point()+
+  geom_smooth(method = lm,
+              se=FALSE,  fullrange=T)
+
+P3
+p3<-ggplot(data=green_data,
+           mapping = aes(x=LPIBE,y=GCI_Index,))+
+  geom_point()+
+  geom_text(label=green_data$STATE,
+            color="black",
+            size=4)+
+  geom_point()+
+  geom_smooth(method = lm,
+              se=FALSE,  fullrange=T)
+
+### correl1
+install.packages("psych")
+library(psych)
+
+library(readr)
+correl <- read_csv("correl.csv")
+
+view(correl)
+
+#cada una de las variables a correlacionar de forma pareada
+attach(correl)
+names.(correl)
+pairs(correl)
+pairs.panles(correl)
+
+### correl2
+
+# Calculamos la correlación 
+complex_corr<-cor(correl,method="pearson")
+complex_corr
+
+# Redondeamos
+complex_corr=round(complex_corr,digits=2)
+complex_corr
+
+
+#mapa de calor de las correlaciones
+#matriz de correlación
+install.packages("ggcorrplot")
+library(ggcorrplot)
+library(ggplot2)
+
+p4
+p4<-ggcorrplot(complex_corr,method="circle",type="lower",lab=TRUE)+ggtitle("matrizdecorrelacion")+theme_minimal()
+
+#generar un conjunto de gráficos en la misma cuadrícula
+#####
+install.packages("ggpubr")
+require(ggpubr)
+#conjuntar todo en uno
+ggpubr :: ggarrange (p1, p2, p3, p4, etiquetas = c ("A", "B", "C" , "D"))
+
+
+#objeto grafico
+install.packages("gridExtra")
+require (gridExtra)
+F1 <- grid.arrange (p1, p2, p3, p4, nrow = 2)
+
+
